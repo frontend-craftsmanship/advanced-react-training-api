@@ -1,0 +1,10 @@
+endpoint: https://us1.prisma.sh/simon-sturmer/advanced-react-training-api/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: flow-client
+    output: ./generated/prisma
+
+hooks:
+  post-deploy:
+    - prisma generate
