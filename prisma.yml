@@ -1,4 +1,4 @@
-endpoint: https://us1.prisma.sh/simon-sturmer/advanced-react-training-api/dev
+endpoint: https://us1.prisma.sh/advanced-react-training-api/money-trackr/dev
 datamodel: datamodel.prisma
 
 generate:

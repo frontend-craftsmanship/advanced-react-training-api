@@ -1,4 +1,34 @@
 type User {
   id: ID! @unique
+  email: String! @unique
   name: String!
+  password: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Transaction {
+  id: ID! @unique
+  type: Transaction_Type!
+  transactionDetail: String!
+  amount: Float!
+  category: Category!
+  date: DateTime!
+}
+
+enum Transaction_Type {
+  EXPENSE
+  INCOME
+}
+
+enum Category {
+  FOOD
+  CLOTHES
+  COMMUNICATIONS
+  ENTERTAINMENT
+  TRANSPORTATION
+  BILLS
+  SALARY
+  SAVINGS
+  DEPOSITS
 }
