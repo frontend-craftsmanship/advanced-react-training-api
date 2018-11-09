@@ -1,0 +1,35 @@
+# import * from "./inputs.graphql"
+# import * from "./responses.graphql"
+
+type Query {
+  transactions(
+    where: TransactionWhereInput
+    orderBy: TransactionOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Transaction]!
+  transaction(where: TransactionWhereUniqueInput!): Transaction
+  user(where: UserWhereUniqueInput!): User
+  users(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [User]!
+}
+
+type Mutation {
+  createTransaction(data: TransactionCreateInput!): Transaction!
+  updateTransaction(
+    data: TransactionUpdateInput!
+    where: TransactionWhereUniqueInput!
+  ): Transaction
+  deleteTransaction(where: TransactionWhereUniqueInput!): Transaction
+  login(data: LoginInput): LoginResponse!
+}

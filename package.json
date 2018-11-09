@@ -1,5 +1,27 @@
 {
+  "name": "advanced-react-training-api",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "forever -c 'babel-node' main.js"
+  },
   "dependencies": {
-    "graphql-yoga": "^1.16.7"
-  }
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "bcrypt": "^3.0.2",
+    "forever": "^0.15.3",
+    "graphql-import": "^0.6.0",
+    "graphql-tools": "^3.1.1",
+    "graphql-yoga": "^1.16.7",
+    "jsonwebtoken": "^8.3.0",
+    "prisma-binding": "^2.1.4"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.85.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
