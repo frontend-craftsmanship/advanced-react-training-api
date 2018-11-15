@@ -41,14 +41,32 @@ const server = new GraphQLServer({
   }
 });
 
-let jsonParser = bodyParser.json();
-
-server.express.use(jsonParser);
+server.express.use(bodyParser.json());
 
 server.express.get('/transactions', async (req, res) => {
   let transactions = await prisma.query.transactions(
     null,
-    '{ id type transactionDetail amount category date }'
+    '{ id type transactionDetail amount category createdAt updatedAt }'
+  );
+  return res.json({
+    data: transactions
+  });
+});
+
+server.express.post('/transactions', async (req, res) => {
+  let id = req.params.id;
+  let transactions = await prisma.mutation.createTransaction(
+    {
+      data: {
+        ...req.body,
+        user: {
+          connect: {
+            id: 'cjog1c42b1mty0a01lnjx6nvn'
+          }
+        }
+      }
+    },
+    '{ id type transactionDetail amount category createdAt updatedAt }'
   );
   return res.json({
     data: transactions
@@ -63,7 +81,7 @@ server.express.get('/transactions/:id', async (req, res) => {
         id
       }
     },
-    '{ id type transactionDetail amount category date }'
+    '{ id type transactionDetail amount category createdAt updatedAt }'
   );
   return res.json({
     data: transaction

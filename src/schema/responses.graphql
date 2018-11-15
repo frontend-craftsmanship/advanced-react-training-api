@@ -4,7 +4,9 @@ type Transaction {
   transactionDetail: String!
   amount: Float!
   category: Category!
-  date: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
 }
 
 type User {
@@ -14,6 +16,15 @@ type User {
   password: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  transactions(
+    where: TransactionWhereInput
+    orderBy: TransactionOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Transaction!]
 }
 
 type LoginResponse {

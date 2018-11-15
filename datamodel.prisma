@@ -5,6 +5,7 @@ type User {
   password: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  transactions: [Transaction!]!
 }
 
 type Transaction {
@@ -13,7 +14,9 @@ type Transaction {
   transactionDetail: String!
   amount: Float!
   category: Category!
-  date: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
 }
 
 enum Transaction_Type {

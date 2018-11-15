@@ -160,8 +160,6 @@ export type TransactionOrderByInput =
   | "amount_DESC"
   | "category_ASC"
   | "category_DESC"
-  | "date_ASC"
-  | "date_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -184,6 +182,50 @@ export type UserOrderByInput =
 export type Transaction_Type = "EXPENSE" | "INCOME";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export interface TransactionCreateInput {
+  type: Transaction_Type;
+  transactionDetail: String;
+  amount: Float;
+  category: Category;
+  user: UserCreateOneWithoutTransactionsInput;
+}
+
+export type TransactionWhereUniqueInput = AtLeastOne<{
+  id: ID_Input
+}>;
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input,
+  email?: String
+}>;
+
+export interface UserUpdateOneRequiredWithoutTransactionsInput {
+  create?: UserCreateWithoutTransactionsInput;
+  update?: UserUpdateWithoutTransactionsDataInput;
+  upsert?: UserUpsertWithoutTransactionsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface TransactionCreateWithoutUserInput {
+  type: Transaction_Type;
+  transactionDetail: String;
+  amount: Float;
+  category: Category;
+}
+
+export interface TransactionUpdateInput {
+  type?: Transaction_Type;
+  transactionDetail?: String;
+  amount?: Float;
+  category?: Category;
+  user?: UserUpdateOneRequiredWithoutTransactionsInput;
+}
+
+export interface TransactionCreateManyWithoutUserInput {
+  create?: TransactionCreateWithoutUserInput[];
+  connect?: TransactionWhereUniqueInput[];
+}
 
 export interface UserWhereInput {
   id?: ID_Input;
@@ -258,14 +300,98 @@ export interface UserWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
+  transactions_every?: TransactionWhereInput;
+  transactions_some?: TransactionWhereInput;
+  transactions_none?: TransactionWhereInput;
   AND?: UserWhereInput[];
   OR?: UserWhereInput[];
   NOT?: UserWhereInput[];
 }
 
-export type TransactionWhereUniqueInput = AtLeastOne<{
-  id: ID_Input
-}>;
+export interface UserCreateInput {
+  email: String;
+  name: String;
+  password: String;
+  transactions?: TransactionCreateManyWithoutUserInput;
+}
+
+export interface TransactionSubscriptionWhereInput {
+  mutation_in?: MutationType[];
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[];
+  updatedFields_contains_some?: String[];
+  node?: TransactionWhereInput;
+  AND?: TransactionSubscriptionWhereInput[];
+  OR?: TransactionSubscriptionWhereInput[];
+  NOT?: TransactionSubscriptionWhereInput[];
+}
+
+export interface UserUpsertWithoutTransactionsInput {
+  update: UserUpdateWithoutTransactionsDataInput;
+  create: UserCreateWithoutTransactionsInput;
+}
+
+export interface TransactionUpdateWithoutUserDataInput {
+  type?: Transaction_Type;
+  transactionDetail?: String;
+  amount?: Float;
+  category?: Category;
+}
+
+export interface TransactionUpdateManyWithoutUserInput {
+  create?: TransactionCreateWithoutUserInput[];
+  delete?: TransactionWhereUniqueInput[];
+  connect?: TransactionWhereUniqueInput[];
+  disconnect?: TransactionWhereUniqueInput[];
+  update?: TransactionUpdateWithWhereUniqueWithoutUserInput[];
+  upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput[];
+}
+
+export interface UserCreateWithoutTransactionsInput {
+  email: String;
+  name: String;
+  password: String;
+}
+
+export interface UserCreateOneWithoutTransactionsInput {
+  create?: UserCreateWithoutTransactionsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserUpdateWithoutTransactionsDataInput {
+  email?: String;
+  name?: String;
+  password?: String;
+}
+
+export interface UserUpdateInput {
+  email?: String;
+  name?: String;
+  password?: String;
+  transactions?: TransactionUpdateManyWithoutUserInput;
+}
+
+export interface TransactionUpdateWithWhereUniqueWithoutUserInput {
+  where: TransactionWhereUniqueInput;
+  data: TransactionUpdateWithoutUserDataInput;
+}
+
+export interface TransactionUpsertWithWhereUniqueWithoutUserInput {
+  where: TransactionWhereUniqueInput;
+  update: TransactionUpdateWithoutUserDataInput;
+  create: TransactionCreateWithoutUserInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[];
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[];
+  updatedFields_contains_some?: String[];
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[];
+  OR?: UserSubscriptionWhereInput[];
+  NOT?: UserSubscriptionWhereInput[];
+}
 
 export interface TransactionWhereInput {
   id?: ID_Input;
@@ -312,90 +438,30 @@ export interface TransactionWhereInput {
   category_not?: Category;
   category_in?: Category[];
   category_not_in?: Category[];
-  date?: DateTimeInput;
-  date_not?: DateTimeInput;
-  date_in?: DateTimeInput[];
-  date_not_in?: DateTimeInput[];
-  date_lt?: DateTimeInput;
-  date_lte?: DateTimeInput;
-  date_gt?: DateTimeInput;
-  date_gte?: DateTimeInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[];
+  createdAt_not_in?: DateTimeInput[];
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[];
+  updatedAt_not_in?: DateTimeInput[];
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  user?: UserWhereInput;
   AND?: TransactionWhereInput[];
   OR?: TransactionWhereInput[];
   NOT?: TransactionWhereInput[];
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input,
-  email?: String
-}>;
-
-export interface TransactionCreateInput {
-  type: Transaction_Type;
-  transactionDetail: String;
-  amount: Float;
-  category: Category;
-  date: DateTimeInput;
-}
-
-export interface TransactionUpdateInput {
-  type?: Transaction_Type;
-  transactionDetail?: String;
-  amount?: Float;
-  category?: Category;
-  date?: DateTimeInput;
-}
-
-export interface UserCreateInput {
-  email: String;
-  name: String;
-  password: String;
-}
-
-export interface UserUpdateInput {
-  email?: String;
-  name?: String;
-  password?: String;
-}
-
-export interface TransactionSubscriptionWhereInput {
-  mutation_in?: MutationType[];
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[];
-  updatedFields_contains_some?: String[];
-  node?: TransactionWhereInput;
-  AND?: TransactionSubscriptionWhereInput[];
-  OR?: TransactionSubscriptionWhereInput[];
-  NOT?: TransactionSubscriptionWhereInput[];
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[];
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[];
-  updatedFields_contains_some?: String[];
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[];
-  OR?: UserSubscriptionWhereInput[];
-  NOT?: UserSubscriptionWhereInput[];
-}
-
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface AggregateUserNode {
-  count: Int;
-}
-
-export interface AggregateUser
-  extends Promise<AggregateUserNode>, Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUserNode>>, Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserPreviousValuesNode {
@@ -427,25 +493,36 @@ export interface UserPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface UserSubscriptionPayloadNode {
-  mutation: MutationType;
-  updatedFields?: String[];
+export interface TransactionPreviousValuesNode {
+  id: ID_Output;
+  type: Transaction_Type;
+  transactionDetail: String;
+  amount: Float;
+  category: Category;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
-export interface UserSubscriptionPayload
-  extends Promise<UserSubscriptionPayloadNode>, Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T: User>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T: UserPreviousValues>() => T;
+export interface TransactionPreviousValues
+  extends Promise<TransactionPreviousValuesNode>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<Transaction_Type>;
+  transactionDetail: () => Promise<String>;
+  amount: () => Promise<Float>;
+  category: () => Promise<Category>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayloadNode>>, Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T: UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T: UserPreviousValuesSubscription>() => T;
+export interface TransactionPreviousValuesSubscription
+  extends Promise<AsyncIterator<TransactionPreviousValuesNode>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<Transaction_Type>>;
+  transactionDetail: () => Promise<AsyncIterator<String>>;
+  amount: () => Promise<AsyncIterator<Float>>;
+  category: () => Promise<AsyncIterator<Category>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface TransactionNode {
@@ -454,7 +531,8 @@ export interface TransactionNode {
   transactionDetail: String;
   amount: Float;
   category: Category;
-  date: DateTimeOutput;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface Transaction extends Promise<TransactionNode>, Fragmentable {
@@ -463,7 +541,9 @@ export interface Transaction extends Promise<TransactionNode>, Fragmentable {
   transactionDetail: () => Promise<String>;
   amount: () => Promise<Float>;
   category: () => Promise<Category>;
-  date: () => Promise<DateTimeOutput>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  user: <T: User>() => T;
 }
 
 export interface TransactionSubscription
@@ -473,7 +553,71 @@ export interface TransactionSubscription
   transactionDetail: () => Promise<AsyncIterator<String>>;
   amount: () => Promise<AsyncIterator<Float>>;
   category: () => Promise<AsyncIterator<Category>>;
-  date: () => Promise<AsyncIterator<DateTimeOutput>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  user: <T: UserSubscription>() => T;
+}
+
+export interface AggregateTransactionNode {
+  count: Int;
+}
+
+export interface AggregateTransaction
+  extends Promise<AggregateTransactionNode>, Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTransactionSubscription
+  extends Promise<AsyncIterator<AggregateTransactionNode>>, Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserNode {
+  id: ID_Output;
+  email: String;
+  name: String;
+  password: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface User extends Promise<UserNode>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  transactions: <T: Promise<Array<TransactionNode>>>(args?: {
+    where?: TransactionWhereInput,
+    orderBy?: TransactionOrderByInput,
+    skip?: Int,
+    after?: String,
+    before?: String,
+    first?: Int,
+    last?: Int
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<UserNode>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  transactions: <
+    T: Promise<AsyncIterator<Array<TransactionSubscription>>>
+  >(args?: {
+    where?: TransactionWhereInput,
+    orderBy?: TransactionOrderByInput,
+    skip?: Int,
+    after?: String,
+    before?: String,
+    first?: Int,
+    last?: Int
+  }) => T;
 }
 
 export interface BatchPayloadNode {
@@ -487,44 +631,6 @@ export interface BatchPayload extends Promise<BatchPayloadNode>, Fragmentable {
 export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayloadNode>>, Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface UserEdgeNode {
-  cursor: String;
-}
-
-export interface UserEdge extends Promise<UserEdgeNode>, Fragmentable {
-  node: <T: User>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdgeNode>>, Fragmentable {
-  node: <T: UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TransactionSubscriptionPayloadNode {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface TransactionSubscriptionPayload
-  extends Promise<TransactionSubscriptionPayloadNode>, Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T: Transaction>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T: TransactionPreviousValues>() => T;
-}
-
-export interface TransactionSubscriptionPayloadSubscription
-  extends Promise<
-    AsyncIterator<TransactionSubscriptionPayloadNode>
-  >, Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T: TransactionSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T: TransactionPreviousValuesSubscription>() => T;
 }
 
 export interface TransactionConnectionNode {}
@@ -565,77 +671,27 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface TransactionPreviousValuesNode {
-  id: ID_Output;
-  type: Transaction_Type;
-  transactionDetail: String;
-  amount: Float;
-  category: Category;
-  date: DateTimeOutput;
+export interface TransactionSubscriptionPayloadNode {
+  mutation: MutationType;
+  updatedFields?: String[];
 }
 
-export interface TransactionPreviousValues
-  extends Promise<TransactionPreviousValuesNode>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<Transaction_Type>;
-  transactionDetail: () => Promise<String>;
-  amount: () => Promise<Float>;
-  category: () => Promise<Category>;
-  date: () => Promise<DateTimeOutput>;
+export interface TransactionSubscriptionPayload
+  extends Promise<TransactionSubscriptionPayloadNode>, Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T: Transaction>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T: TransactionPreviousValues>() => T;
 }
 
-export interface TransactionPreviousValuesSubscription
-  extends Promise<AsyncIterator<TransactionPreviousValuesNode>>, Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<Transaction_Type>>;
-  transactionDetail: () => Promise<AsyncIterator<String>>;
-  amount: () => Promise<AsyncIterator<Float>>;
-  category: () => Promise<AsyncIterator<Category>>;
-  date: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface UserNode {
-  id: ID_Output;
-  email: String;
-  name: String;
-  password: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface User extends Promise<UserNode>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
-  password: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<UserNode>>, Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface UserConnectionNode {}
-
-export interface UserConnection
-  extends Promise<UserConnectionNode>, Fragmentable {
-  pageInfo: <T: PageInfo>() => T;
-  edges: <T: Promise<Array<UserEdgeNode>>>() => T;
-  aggregate: <T: AggregateUser>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnectionNode>>, Fragmentable {
-  pageInfo: <T: PageInfoSubscription>() => T;
-  edges: <T: Promise<AsyncIterator<Array<UserEdgeSubscription>>>>() => T;
-  aggregate: <T: AggregateUserSubscription>() => T;
+export interface TransactionSubscriptionPayloadSubscription
+  extends Promise<
+    AsyncIterator<TransactionSubscriptionPayloadNode>
+  >, Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T: TransactionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T: TransactionPreviousValuesSubscription>() => T;
 }
 
 export interface TransactionEdgeNode {
@@ -654,21 +710,76 @@ export interface TransactionEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateTransactionNode {
+export interface UserSubscriptionPayloadNode {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface UserSubscriptionPayload
+  extends Promise<UserSubscriptionPayloadNode>, Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T: User>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T: UserPreviousValues>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayloadNode>>, Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T: UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T: UserPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateUserNode {
   count: Int;
 }
 
-export interface AggregateTransaction
-  extends Promise<AggregateTransactionNode>, Fragmentable {
+export interface AggregateUser
+  extends Promise<AggregateUserNode>, Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateTransactionSubscription
-  extends Promise<AsyncIterator<AggregateTransactionNode>>, Fragmentable {
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUserNode>>, Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export type Long = string;
+export interface UserConnectionNode {}
+
+export interface UserConnection
+  extends Promise<UserConnectionNode>, Fragmentable {
+  pageInfo: <T: PageInfo>() => T;
+  edges: <T: Promise<Array<UserEdgeNode>>>() => T;
+  aggregate: <T: AggregateUser>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnectionNode>>, Fragmentable {
+  pageInfo: <T: PageInfoSubscription>() => T;
+  edges: <T: Promise<AsyncIterator<Array<UserEdgeSubscription>>>>() => T;
+  aggregate: <T: AggregateUserSubscription>() => T;
+}
+
+export interface UserEdgeNode {
+  cursor: String;
+}
+
+export interface UserEdge extends Promise<UserEdgeNode>, Fragmentable {
+  node: <T: User>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdgeNode>>, Fragmentable {
+  node: <T: UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /*
 DateTime scalar input type, allowing Date
@@ -680,16 +791,7 @@ DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
 
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
+export type Long = string;
 
 /*
 The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
@@ -700,6 +802,12 @@ export type Float = number;
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
+
+/*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number;
+export type ID_Output = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 

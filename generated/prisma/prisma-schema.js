@@ -79,7 +79,9 @@ type Transaction {
   transactionDetail: String!
   amount: Float!
   category: Category!
-  date: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
 }
 
 enum Transaction_Type {
@@ -98,7 +100,19 @@ input TransactionCreateInput {
   transactionDetail: String!
   amount: Float!
   category: Category!
-  date: DateTime!
+  user: UserCreateOneWithoutTransactionsInput!
+}
+
+input TransactionCreateManyWithoutUserInput {
+  create: [TransactionCreateWithoutUserInput!]
+  connect: [TransactionWhereUniqueInput!]
+}
+
+input TransactionCreateWithoutUserInput {
+  type: Transaction_Type!
+  transactionDetail: String!
+  amount: Float!
+  category: Category!
 }
 
 type TransactionEdge {
@@ -117,8 +131,6 @@ enum TransactionOrderByInput {
   amount_DESC
   category_ASC
   category_DESC
-  date_ASC
-  date_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -131,7 +143,8 @@ type TransactionPreviousValues {
   transactionDetail: String!
   amount: Float!
   category: Category!
-  date: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type TransactionSubscriptionPayload {
@@ -157,7 +170,34 @@ input TransactionUpdateInput {
   transactionDetail: String
   amount: Float
   category: Category
-  date: DateTime
+  user: UserUpdateOneRequiredWithoutTransactionsInput
+}
+
+input TransactionUpdateManyWithoutUserInput {
+  create: [TransactionCreateWithoutUserInput!]
+  delete: [TransactionWhereUniqueInput!]
+  connect: [TransactionWhereUniqueInput!]
+  disconnect: [TransactionWhereUniqueInput!]
+  update: [TransactionUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [TransactionUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input TransactionUpdateWithoutUserDataInput {
+  type: Transaction_Type
+  transactionDetail: String
+  amount: Float
+  category: Category
+}
+
+input TransactionUpdateWithWhereUniqueWithoutUserInput {
+  where: TransactionWhereUniqueInput!
+  data: TransactionUpdateWithoutUserDataInput!
+}
+
+input TransactionUpsertWithWhereUniqueWithoutUserInput {
+  where: TransactionWhereUniqueInput!
+  update: TransactionUpdateWithoutUserDataInput!
+  create: TransactionCreateWithoutUserInput!
 }
 
 input TransactionWhereInput {
@@ -205,14 +245,23 @@ input TransactionWhereInput {
   category_not: Category
   category_in: [Category!]
   category_not_in: [Category!]
-  date: DateTime
-  date_not: DateTime
-  date_in: [DateTime!]
-  date_not_in: [DateTime!]
-  date_lt: DateTime
-  date_lte: DateTime
-  date_gt: DateTime
-  date_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  user: UserWhereInput
   AND: [TransactionWhereInput!]
   OR: [TransactionWhereInput!]
   NOT: [TransactionWhereInput!]
@@ -229,6 +278,7 @@ type User {
   password: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  transactions(where: TransactionWhereInput, orderBy: TransactionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Transaction!]
 }
 
 type UserConnection {
@@ -238,6 +288,18 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  email: String!
+  name: String!
+  password: String!
+  transactions: TransactionCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutTransactionsInput {
+  create: UserCreateWithoutTransactionsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutTransactionsInput {
   email: String!
   name: String!
   password: String!
@@ -294,6 +356,25 @@ input UserUpdateInput {
   email: String
   name: String
   password: String
+  transactions: TransactionUpdateManyWithoutUserInput
+}
+
+input UserUpdateOneRequiredWithoutTransactionsInput {
+  create: UserCreateWithoutTransactionsInput
+  update: UserUpdateWithoutTransactionsDataInput
+  upsert: UserUpsertWithoutTransactionsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutTransactionsDataInput {
+  email: String
+  name: String
+  password: String
+}
+
+input UserUpsertWithoutTransactionsInput {
+  update: UserUpdateWithoutTransactionsDataInput!
+  create: UserCreateWithoutTransactionsInput!
 }
 
 input UserWhereInput {
@@ -369,6 +450,9 @@ input UserWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  transactions_every: TransactionWhereInput
+  transactions_some: TransactionWhereInput
+  transactions_none: TransactionWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
